@@ -13,6 +13,8 @@
 
     <dependencies>
 
+        <!--spring-cloud eureka客户端依赖，因为order服务需要注册到eureka中的;
+        添加eureka客户端依赖之后，服务就会连接注册中心，如果连接不上，会一直尝试连接-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
