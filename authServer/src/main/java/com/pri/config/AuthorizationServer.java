@@ -6,20 +6,24 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 
 /**
@@ -57,6 +61,10 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /** 注入密码编码器 ChenQi*/
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
      * methodName: configure <BR>
      * description:  配置客户端详情服务<BR>
@@ -69,10 +77,12 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients)
             throws Exception {
-        // clients.withClientDetails(clientDetailsService);
+
+        // 设置客户端详情服务，客户端信息已经自定义从数据库中获取 ChenQi
+        clients.withClientDetails(clientDetailsService);
 
         /* 暂时将客户端详情服务配置，放到内存 ChenQi*/
-        clients.inMemory()// 使用in-memory 内存方式存储
+      /*  clients.inMemory()// 使用in-memory 内存方式存储
                 .withClient("c1")// 客户端id
                 .secret(new BCryptPasswordEncoder ().encode("secret"))//客户端密钥
                 .resourceIds("res1")//客户端可以访问的资源列表
@@ -81,8 +91,24 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
                 .scopes("all")// 允许的授权范围
                 .autoApprove(false)//false：如果授权类型是password，跳转到授权页面；如果是true的话，直接发令牌不用跳转到授权页面。
                 //加上验证回调地址
-                .redirectUris("http://www.baidu.com")
+                .redirectUris("http://www.baidu.com")*/
         ;
+    }
+
+    /**
+     * methodName: clientDetailsService <BR>
+     * description: 自定义客户端信服务<BR>
+     * remark: 从数据库中获取客户端信息<BR>
+     * param: dataSource <BR>
+     * return: org.springframework.security.oauth2.provider.ClientDetailsService <BR>
+     * author: ChenQi <BR>
+     * createDate: 2020-07-05 19:53 <BR>
+     */
+    @Bean
+    public ClientDetailsService clientDetailsService(DataSource dataSource) {
+        ClientDetailsService clientDetailsService = new JdbcClientDetailsService (dataSource);
+        ((JdbcClientDetailsService) clientDetailsService).setPasswordEncoder(passwordEncoder);
+        return clientDetailsService;
     }
 
     /**
@@ -114,9 +140,24 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     }
 
     //设置授权码模式的授权码如何存取，暂时采用内存方式
-    @Bean
+/*    @Bean
     public AuthorizationCodeServices authorizationCodeServices() {
         return new InMemoryAuthorizationCodeServices ();
+    }*/
+
+    /**
+     * methodName: authorizationCodeServices <BR>
+     * description: 自定义授权码服务<BR>
+     * remark: 设置授权码模式的授权码，从数据库中存取<BR>
+     * param: dataSource <BR>
+     * return: org.springframework.security.oauth2.provider.code.AuthorizationCodeServices <BR>
+     * author: ChenQi <BR>
+     * createDate: 2020-07-05 19:56 <BR>
+     */
+    @Bean
+    public AuthorizationCodeServices authorizationCodeServices(DataSource dataSource) {
+        //设置授权码模式的授权码从数据库中存取
+        return new JdbcAuthorizationCodeServices (dataSource);
     }
 
     /**
