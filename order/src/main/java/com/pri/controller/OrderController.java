@@ -20,14 +20,8 @@ public class OrderController {
     @PreAuthorize("hasAuthority('p1')")//拥有p1权限方可访问此url
     public String r1(){
         //获取用户身份信息
-        UserDTO  userDTO = new UserDTO();
-        try {
-            userDTO = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        } catch (Exception e) {
-            System.out.println("出错了！！！！！");
-            System.out.println(e);
-        }
-        return userDTO == null ? "匿名":userDTO.getFullname()+"访问资源1";
+        UserDTO  userDTO = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDTO.getFullname()+"访问资源1";
     }
 
 }

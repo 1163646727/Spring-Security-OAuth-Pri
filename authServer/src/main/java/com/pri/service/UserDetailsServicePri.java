@@ -1,5 +1,6 @@
 package com.pri.service;
 
+import com.alibaba.fastjson.JSON;
 import com.pri.dao.UserDao;
 import com.pri.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,9 @@ public class UserDetailsServicePri implements UserDetailsService {
         //将permissions转成数组
         String[] permissionArray = new String[permissions.size()];
         permissions.toArray(permissionArray);
-        UserDetails userDetails = User.withUsername(userDto.getUsername()).password(userDto.getPassword()).authorities(permissionArray).build();
+        //将userDto转成json
+        String principal = JSON.toJSONString(userDto);
+        UserDetails userDetails = User.withUsername(principal).password(userDto.getPassword()).authorities(permissionArray).build();
         return userDetails;
     }
 }
