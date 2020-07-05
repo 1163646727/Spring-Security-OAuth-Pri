@@ -103,7 +103,6 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         service.setSupportRefreshToken(true);
         // 设置令牌存储策略 ChenQi
         service.setTokenStore(tokenStore);
-
         service.setAccessTokenValiditySeconds(7200); // 令牌默认有效期2小时
         service.setRefreshTokenValiditySeconds(259200); // 刷新令牌默认有效期3天
 
@@ -132,7 +131,8 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
-                /* 设置 认证管理器（密码授权类型） ChenQi*/
+                /* 设置 认证管理器（密码授权类型）
+                当选择了资源所有者密码（password）授权类型的时候，请设置 这个属性注入一个 AuthenticationManager 对象ChenQi*/
                 .authenticationManager(authenticationManager)
                 // 设置 授权码授权类型 服务 ChenQi
                 .authorizationCodeServices(authorizationCodeServices)

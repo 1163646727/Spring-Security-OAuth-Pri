@@ -38,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     /**
      * methodName: passwordEncoder <BR>
      * description: 密码编码器 <BR>
@@ -63,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/r/r1").hasAnyAuthority("p1")
                 .antMatchers("/login*").permitAll()
-                //.anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .anyRequest().permitAll()//除了/r/**，其它的请求可以访问
                 .and()
                 .formLogin()
