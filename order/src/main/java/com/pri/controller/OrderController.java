@@ -21,7 +21,7 @@ public class OrderController {
     public String r1(){
         //获取用户身份信息
         UserDTO  userDTO = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userDTO.getFullname()+"访问资源1";
+        return "".equals (userDTO.getFullname()) ? "匿名" : userDTO.getFullname()+"访问资源1";
     }
 
 }

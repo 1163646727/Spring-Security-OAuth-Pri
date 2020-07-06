@@ -41,7 +41,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
      /*      UserDTO userDTO = new UserDTO();
            String principal = jsonObject.getString("principal");
            userDTO.setUsername(principal);*/
-            UserDTO userDTO = JSON.parseObject(jsonObject.getString("principal"), UserDTO.class);
+            UserDTO userDTO = new UserDTO();
+            try {
+                // 当授权模式是简单模式是，是没有用户信息的 ChenQi
+                userDTO = JSON.parseObject(jsonObject.getString("principal"), UserDTO.class);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
             //用户权限
             JSONArray authoritiesArray = jsonObject.getJSONArray("authorities");
             String[] authorities = authoritiesArray.toArray(new String[authoritiesArray.size()]);
