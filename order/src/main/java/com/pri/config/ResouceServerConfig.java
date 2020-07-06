@@ -27,8 +27,8 @@ public class ResouceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private TokenStore tokenStore;
 
-    /** 资源id ChenQi*/
-    public static final String RESOURCE_ID = "res1";
+    /** 设置订单服务的资源id为"order" ChenQi*/
+    public static final String RESOURCE_ID = "order";
 
 /*    @Autowired
     TokenStore tokenStore;*/
