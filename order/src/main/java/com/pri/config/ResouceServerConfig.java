@@ -56,8 +56,8 @@ public class ResouceServerConfig extends ResourceServerConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                /** #oauth2.hasScope()   允许的授权范围 ChenQi*/
-                .antMatchers("/**").access("#oauth2.hasScope('ROLE_ADMIN')")
+                /** #oauth2.hasScope()   订单服务允许的授权范围 ChenQi*/
+                .antMatchers("/**").access("#oauth2.hasScope('ORDER')")
                 .and().csrf().disable()
                 /** 设置session无效 ChenQi*/
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

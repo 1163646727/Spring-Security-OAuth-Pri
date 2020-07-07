@@ -24,8 +24,8 @@ public class ResouceServerConfig{
     /*@Autowired
     private TokenStore tokenStore;*/
 
-    /** 资源id ChenQi*/
-    public static final String RESOURCE_ID = "res1";
+    /** 定义一个默认的资源ChenQi*/
+    public static final String RESOURCE_ID = "pri";
 
 
     /**
@@ -80,8 +80,8 @@ public class ResouceServerConfig{
         public void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    /** 以/order开头的请求，判断是否有'ROLE_API'的权限 ChenQi*/
-                    .antMatchers("/order/**").access("#oauth2.hasScope('ROLE_API')");
+                    /** 以/order开头的请求，判断是否有'ORDER'的权限 ChenQi*/
+                    .antMatchers("/order/**").access("#oauth2.hasScope('ORDER')");
         }
     }
 
