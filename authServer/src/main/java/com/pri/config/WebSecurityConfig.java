@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 屏蔽CSRF控制，即spring security不再限制CSRF 1024
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/r/r1").hasAnyAuthority("p1")
+                //.antMatchers("/r/r1").hasAnyAuthority("p1")
                 .antMatchers("/login*").permitAll()
                 .anyRequest().authenticated()
                 .anyRequest().permitAll()//除了/r/**，其它的请求可以访问
