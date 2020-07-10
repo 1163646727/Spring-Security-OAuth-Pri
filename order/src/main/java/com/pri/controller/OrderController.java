@@ -1,7 +1,7 @@
 package com.pri.controller;
 
 import com.pri.dto.UserDTO;
-import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.lang.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,8 @@ public class OrderController {
         } catch (Exception e) {
             System.out.println(e);
         }
-        return (StringUtils.isBlank(userDTO.getFullname()) ? "匿名" : userDTO.getFullname())+"访问资源1";
+        //return (StringUtils.isBlank(userDTO.getFullname()) ? "匿名" : userDTO.getFullname())+"访问资源1";
+        return (userDTO.getFullname() == null ? "匿名" : userDTO.getFullname())+"访问资源1";
     }
 
     @GetMapping(value = "/r2")
@@ -35,7 +36,8 @@ public class OrderController {
     public String r2(){
         //获取用户身份信息
         UserDTO  userDTO = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (StringUtils.isBlank(userDTO.getFullname()) ? "匿名" : userDTO.getFullname())+"访问资源2";
+        // return (StringUtils.isBlank(userDTO.getFullname()) ? "匿名" : userDTO.getFullname())+"访问资源2";
+        return (userDTO.getFullname() == null ? "匿名" : userDTO.getFullname())+"访问资源2";
     }
 
     @GetMapping(value = "/r3")
@@ -43,7 +45,8 @@ public class OrderController {
     public String r3(){
         //获取用户身份信息
         UserDTO  userDTO = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (StringUtils.isBlank(userDTO.getFullname()) ? "匿名" : userDTO.getFullname())+"访问资源3";
+        // return (StringUtils.isBlank(userDTO.getFullname()) ? "匿名" : userDTO.getFullname())+"访问资源3";
+        return (userDTO.getFullname() == null ? "匿名" : userDTO.getFullname())+"访问资源3";
     }
 
 }

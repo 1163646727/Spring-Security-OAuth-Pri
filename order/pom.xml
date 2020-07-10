@@ -15,10 +15,24 @@
 
         <!--spring-cloud eureka客户端依赖，因为order服务需要注册到eureka中的;
         添加eureka客户端依赖之后，服务就会连接注册中心，如果连接不上，会一直尝试连接-->
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>-->
+
+        <!--alibaba nacos依赖 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <!--nacos 需要feign 依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
